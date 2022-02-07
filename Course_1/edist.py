@@ -11,25 +11,22 @@
 # Output: the smallest number of operations (insertion, deletion, and substitution) needed to transform A to B.
 # This number is usually called the edit distance. For example, the edit distance between "good"
 # and "bad" is three: good -> ood -> bod -> bad.
-# We will approach this problem using dynamic programming. Let |A| = n∣A∣=n and |B| = m∣B∣=m.
-# We will fill a (n + 1) \times (m + 1)(n+1)×(m+1) table DD such that D[i][j]D[i][j] will be the
+# We will approach this problem using dynamic programming. Let |A| = n and |B| = m.
+# We will fill a (n + 1) \times (m + 1)(n+1)×(m+1) table DD such that D[i][j] will be the
 # edit distance between A[:i]A[:i] and B[:j]B[:j]. We will derive a recurrence
 # to compute D[i][j]D[i][j]. Consider two cases:
 #
-# Case A[i - 1] = B[j - 1]A[i−1]=B[j−1]. Then we can focus on beginnigns of both strings,
-# so D[i][j] = D[i - 1][j - 1]D[i][j]=D[i−1][j−1].
+# Case A[i - 1] = B[j - 1] Then we can focus on beginnigns of both strings,
+# so D[i][j]=D[i−1][j−1].
 #
-# Case A[i - 1] \neq B[j - 1]A[i−1]
-# 
-# ​
-#  =B[j−1]. Since we want ultimately make the stings equal, there are three options
+# Case A[i - 1] != B[j - 1]
+# Since we want ultimately make the stings equal, there are three options
 #
 # We delete A[i−1]. The remaining number of operations is D[i−1][j]
 # We delete B[j−1]. The remaining number of operations is D[i][j−1]
 # We substitute A[i−1] for B[j−1]. The remaining number of operations is D[i−1][j−1].
 #
-# Therefore, in this case D[i][j] = 1 + \min(D[i - 1][j], D[i][j - 1], D[i - 1][j - 1])
-# D[i][j]=1+min(D[i−1][j],D[i][j−1],D[i−1][j−1]).
+# Therefore, in this case D[i][j] = 1 + min(D[i - 1][j], D[i][j - 1], D[i - 1][j - 1])
 #
 # Part 1.  Write a function edistance(A, B) using the above recurrence.
 #
@@ -41,18 +38,19 @@
 # and bad becomes 5: good -> ood -> od -> d -> ad -> bad.
 #
 # Part 3. Write a function edistance_substring(A, B) that returns the smallest edit
-# distance between a substring of A (that is, a string of the from A[i:j]A[i:j]) and B.
+# distance between a substring of A (that is, a string of the from A[i:j]) and B.
 # In other words, it is allowed to delete some symbols at the beginning and at the end of A for free.
 #
 # For example, if A = good and B = bad, then the output should be 2,
 # because one can transform ood into bad with two subtitutions, and at least two operations
 # are necessary because the letters b and a are not present in A.
-# The complexity of all these functions should be \mathrm{O}(|A| |B|)O(∣A∣∣B∣),
-# so |A| = |B| = 200∣A∣=∣B∣=200 should be fast.
+# The complexity of all these functions should be O(|A| |B|),
+# so |A| = |B| = 200 ∣A∣=∣B∣=200 should be fast.
 #
 # Here is a file with function definitions and a couple of sample input-output pairs:
 
 import math
+
 
 def edistance(A, B):
     n = len(A)
@@ -70,6 +68,7 @@ def edistance(A, B):
                 D[i][j] = 1 + min(D[i-1][j],D[i][j-1],D[i-1][j-1])
 
     return D[n][m]
+
 
 def weighted_edistance(A, B, wdel, wins, wsub):
     n = len(A)
@@ -92,6 +91,9 @@ def weighted_edistance(A, B, wdel, wins, wsub):
 
     return D[n][m]
 
+
+# edistance_substring should be corrected. Have three versions 2 give wrong results. Why?
+
 def edistance_substring(B, A):
     n = len(A)
     m = len(B)
@@ -109,6 +111,7 @@ def edistance_substring(B, A):
     #print(D)
     return min(D[-1])
 
+
 def edistance_substring2(A, B):
     n = len(A)
     m = len(B)
@@ -122,7 +125,7 @@ def edistance_substring2(A, B):
             elif A[i-1] == B[j-1]:
                 D[i][j] = D[i-1][j-1]
             else:
-                D[i][j] = 1 + min(D[i-1][j],D[i][j-1],D[i-1][j-1])
+                D[i][j] = 1 + min(D[i-1][j], D[i][j-1], D[i-1][j-1])
 
     return D[-1][-1]
 

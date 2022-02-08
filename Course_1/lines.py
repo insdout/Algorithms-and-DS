@@ -1,3 +1,27 @@
+# In lines computer game, a player sets balls of different colors in a line.
+# When a continuous block of three or more balls of the same color is formed,
+# it is removed from the line. In this case, all the balls are shifted to each other,
+# and the situation may be repeated.
+# Write a function lines(a) that determines how many balls will be destroyed.
+# There can be at most one continuous block of three or more same-colored balls
+# at the initial moment.
+#
+# Input data:
+# The function takes a list aa with initial balls disposition. Balls number is
+# less or equals 1000, balls colors can be from 0 to 9, each color has its own integer.
+#
+# Output data:
+# The function has to return one number, the number of the balls that will be destroyed.
+#
+# Example:
+# Input: [2, 2, 1, 1, 1, 2, 1]
+# Output: 6
+#
+# Comment:
+# After three balls color of 1 were destroyed, balls shifted to the left
+# and new disposition [2, 2, 2, 1] appears. Three balls color of 2 were destroyed too.
+
+
 def print_a(a, left, right):
     print(*a)
     string = [" " for i in range(len(a))]
@@ -62,15 +86,14 @@ if __name__ == "__main__":
     # should print 9
     print(lines(test_a))
 
-    test_a = [4, 2, 1, 1, 1, 2, 4,5,6,7, 1, 1, 1,1]
+    test_a = [4, 2, 1, 1, 1, 2, 4, 5, 6, 7, 1, 1, 1, 1]
     # should print 7
     print(lines(test_a))
 
-    test_a = [ 7, 1, 1, 1,7,7]
+    test_a = [7, 1, 1, 1, 7, 7]
     # should print 6
     print(lines(test_a))
 
-    test_a = [1,1,2,1,2,2,1,1,1,2,1,1]
+    test_a = [1, 1, 2, 1, 2, 2, 1, 1, 1, 2, 1, 1]
     # should print 3
     print(lines(test_a))
-

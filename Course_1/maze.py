@@ -1,3 +1,61 @@
+# In one of the lectures this week, we have designed a recursive algorithm using so-called backtracking
+# to find whether a packman will escape from a maze. More formally,
+#
+# Input: a maze defined by a 2-d array maze where
+# maze[i][j] is equal to 0 if the j-th cell on the i-th row is empty
+# and 1 if there is a wall there. It is guaranteed that the upper left and lower right cells are empty.
+#
+# Output: True if there exists a path from the upper left cell to the lower right cell passing
+# through empty cells only. False otherwise. A path can go from a cell to a cell that shares a side with it.
+#
+# Below is a python implementation of the algorithm we have designed.
+
+# In this assignment, you will be asked to develop this code in different directions.
+#
+# Part 1. Write a function fastest_escape_length(maze) that takes a maze (as above)
+# as input and returns the length of the shortest path from the upper left corner
+# to the lower right corner. The length of a path is the number of cells it passes through.
+# If there is no path, the function should return math.inf.
+#
+# For example, if
+# maze = [
+#       [0, 0, 0],
+#       [1, 0, 0],
+#       [1, 1, 0]
+#     ]
+# Hint: In the function can_escape above, you can return the length of the shortest
+# path instead of True and  math.inf instead of False. Therefore, you can build your
+# solution upon the provided code.
+#
+# Part 2. Write a function fastest_escapes(maze) that takes a maze and returns
+# a list of all shortest paths from the upper left corner to the lower right corner.
+# Each path should be represented as a list of cells along the path where a cell is
+# a tuple of the coordinates. In the example above, the output should be
+# [ [(0, 0), (0, 1), (0, 2), (1, 2), (2, 2)], [(0, 0), (0, 1), (1, 1), (1, 2), (2, 2)]
+#
+# Hint:  A good starting point would be the previous part. You now should modify it
+# ot to just return the length of the shortest path but a list of all the shortest
+# paths instead. At each recursive call, we take all the fastest escapes for the
+# neighbors, take only the ones of the shortest length, and extend them by one.
+#
+# Part 3. Write a function weighted_escape_length(maze, w) that takes a maze and a
+# nonegative integer w and returns the length of the shortest path from the upper
+# left corner to the lower right corner if it is allowed to pass through the walls,
+# but each wall is considered equivalent to w empty cells.
+#
+# For example, for the example above and w = 0 (that is, passing through walls is for free),
+# the result should be 2.
+#
+# Hint. A solution can be obtained as a modification of your solution of the part 1
+# but now taking into account the option of passing through the wall and the corresponding penalty.
+#
+# Part 4. Write a function weighted_escapes(maze, w) that returns a list of shortest
+# paths in the sense of Part 3. For example, for the sample input of Part 3, the output
+# should be [ [(0, 0), (1, 0), (2, 0), (2, 1), (2, 2)] ].
+#
+# The time limit for each test will be one second.
+
+
 import math
 def can_escape(maze, i=0, j=0):
     # (i, j) is the starting position

@@ -1,3 +1,39 @@
+# Deque (double-ended queue) is an abstract data structure with the following operation
+#
+# -push_front adds a key to the head of the deque
+# -push_back adds a key to the tail of the deque
+# -pop_front extracts a key from the head of the deque and returns it
+# -pop_back extracts a key from the tail of the deque and returns it
+# -front returns head element without removing it
+# -back returns tail element without removing it
+# -size returns number of the elements in the deque
+# -clear removes all elements from the deque
+#
+# Implement DequeDeque class with this methods and error handling.
+# For pop_front, pop_back, front, back
+# the method has to check are there elements in the deque.
+# If it is empty the method has to return string "error" instead of a numeric value.
+#
+# push_front, push_back, clear methods has to return string "ok".
+#
+# Implement process_deque(commands) which takes commands list and returns a list of answers to each command.
+#
+# Input data:
+# List commands consisting of strings "push_front x", "push_back x", "pop_front",
+# "pop_back", "front", "back", "size", "clear".
+#
+# len(commands)≤60000
+#
+# Output data:
+# A list of answers for each command
+# Example:
+#
+# Input: Input:
+#
+#commands=["push_front 1","push_front 2","push_back 6","front","back","clear","size","back"]
+# Output: ["ok", "ok", "ok",  2, 6, "ok", 0, "error"]
+
+
 class Deque:
 
     def __init__(self):

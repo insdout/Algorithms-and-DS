@@ -1,3 +1,26 @@
+# Given an array aa, a sliding window of size kk  is moving from the very
+# left of the array to the very right. Each time the sliding window moves
+# right by one position. For each sliding window position return minimum
+# value of all numbers inside the sliding window.
+#
+# Implement a function sliding_window_min(a, k) which returns a list of
+# minimums for each sliding window position.
+#
+# Input data:
+# List a integers, len(a)≤150000, k≤1000.
+# Output data:
+# The function has to return a list of integers.
+#
+# Example:
+# Input: a = [1, 3, 4, 5, 2, 7], k = 3
+# Output: [1, 3, 2, 2]
+#
+# To satisfy time limit for this task your solution has to work for O(n).
+# To find hints how to achieve this time complexity estimation watch again screencast
+# about queue implementation and think about how to use queue for this task and how to
+# extract minimum from queue for O(1).
+
+
 class Deque:
 
     def __init__(self):

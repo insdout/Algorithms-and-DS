@@ -76,7 +76,7 @@ def bsearch3(arr, key):
 
 
 def bsearch3e(arr, key, left=0, right=None):
-    right = len(arr)  if right is None else right
+    right = len(arr) if right is None else right
     n = right + left
     if left >= right:
         return None

@@ -1,3 +1,5 @@
+# Consider the following function that generates all the subsets of a list of given size kk
+
 def subsets(elems, k):
     if k == 0:
         return [ [] ]
@@ -10,6 +12,7 @@ def subsets(elems, k):
     for s in with_last:
         result.append(s + [last])
     return result
+
 
 if __name__ == "__main__":
     S = subsets(list(range(100)), 4)

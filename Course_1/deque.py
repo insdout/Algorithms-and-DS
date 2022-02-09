@@ -94,8 +94,6 @@ def process_deque(commands):
     return results
 
 
-
-
 if __name__ == "__main__":
     test_cmd = ["push_front 1", "push_front 2", "push_back 6", "front", "back", "clear", "size", "back"]
     # should print ["ok", "ok", "ok", 2, 6, "ok", 0, "error"]

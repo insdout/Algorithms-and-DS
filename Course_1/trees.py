@@ -48,6 +48,7 @@
 
 import math
 
+
 class Node:
     def __init__(self, key=0, parent=None):
         self.key = key
@@ -88,15 +89,15 @@ def tree_max(root):
 def _check_BST(root):
     if root is None:
         return None, None, True
-    bst_left_min, bst_left_max, is_bst_left = _check_BST(root.left)
-    bst_right_min, bst_right_max, is_bst_right = _check_BST(root.right)
-    if bst_right_max is None and bst_right_min is None:
-        bst_right_max = bst_right_min = root.key
-    if bst_left_max is None and bst_left_min is None:
-        bst_left_max = bst_left_min = root.key
-    return min(root.key, bst_left_min, bst_right_min), \
-        max(root.key, bst_left_max, bst_right_max), \
-        (bst_left_max <= root.key <= bst_right_min) and is_bst_left and is_bst_right
+    left_min, left_max, is_bst_left = _check_BST(root.left)
+    right_min, right_max, is_bst_right = _check_BST(root.right)
+    if right_max is None and right_min is None:
+        right_max = right_min = root.key
+    if left_max is None and left_min is None:
+        left_max = left_min = root.key
+    return min(root.key, left_min, right_min), \
+        max(root.key, left_max, right_max), \
+        (left_max <= root.key <= right_min) and is_bst_left and is_bst_right
 
 
 def check_BST(root):

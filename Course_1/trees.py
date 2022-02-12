@@ -105,11 +105,19 @@ def check_BST(root):
 
 
 def _min_diff(root):
-    pass
+    if root:
+        return _min_diff(root.left) + [root.key] + _min_diff(root.right)
+    else:
+        return []
+
 
 
 def min_diff(root):
-    return _min_diff(root)[0]
+    tree = _min_diff(root)
+    diffs = []
+    for i in range(1, len(tree)):
+        diffs.append(abs(tree[i]-tree[i-1]))
+    return min(diffs)
 
 
 #################################################
@@ -120,6 +128,8 @@ if __name__ == "__main__":
     insert(T, Node(2))
     insert(T, Node(-7))
     insert(T, Node(-1))
+    insert(T, Node(17))
+    insert(T, Node(15))
     # T.right.key = -12
     # should print True
     # print(check_BST(T))
@@ -147,3 +157,4 @@ if __name__ == "__main__":
     print(tree_size(T))
     print(_check_BST(T))
     print(tree_max(None))
+    print(min_diff(T))

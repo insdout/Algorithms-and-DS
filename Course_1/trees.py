@@ -111,7 +111,6 @@ def _min_diff(root):
         return []
 
 
-
 def min_diff(root):
     tree = _min_diff(root)
     diffs = []
@@ -120,7 +119,11 @@ def min_diff(root):
     return min(diffs)
 
 
+def count_distinct(root):
+    tree = _min_diff(root)
+    return len(set(tree))
 #################################################
+
 
 if __name__ == "__main__":
     T = Node(3)
@@ -129,6 +132,7 @@ if __name__ == "__main__":
     insert(T, Node(-7))
     insert(T, Node(-1))
     insert(T, Node(17))
+    insert(T, Node(15))
     insert(T, Node(15))
     # T.right.key = -12
     # should print True
@@ -158,3 +162,4 @@ if __name__ == "__main__":
     print(_check_BST(T))
     print(tree_max(None))
     print(min_diff(T))
+    print(count_distinct(T))

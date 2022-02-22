@@ -1,5 +1,6 @@
 from math import ceil
 from random import randint
+from time import time
 
 
 def kth_element(a, b, k, pointer_a=0, pointer_b=0):
@@ -58,27 +59,27 @@ def find_percentile_reference(a, b, p):
     return result
 
 
-def test_percentile(test_case, correct_answer):
+def test_find_percentile(test_case, correct_answer):
     answer = find_percentile(*test_case)
     error_string = "FAILED! Input: {0}\nOutput: {1}\nCorrect Output: {2}"
     assert answer == correct_answer, \
         error_string.format(test_case, answer, correct_answer)
 
 
-def run_test():
-    test_percentile([[1], [], 10], 1)
-    test_percentile([[1], [], 80], 1)
-    test_percentile([[1, 2], [], 10], 1)
-    test_percentile([[1, 2], [], 80], 2)
-    test_percentile([[], [1, 2], 10], 1)
-    test_percentile([[], [1, 2], 80], 2)
-    test_percentile([[1, 2], [3, 4], 100], 4)
-    test_percentile([[1, 2], [3, 4], 50], 2)
-    test_percentile([[1, 2, 7, 8, 10], [6, 12], 50], 7)
-    test_percentile([[1, 2, 7, 8], [6, 12], 50], 6)
-    test_percentile([[15, 20, 35, 40, 50], [], 30], 20)
-    test_percentile([[15, 20], [25, 40, 50], 40], 20)
-    test_percentile([[1, 99], [15, 16, 18, 20], 100], 99)
+def run_unit_tests():
+    test_find_percentile([[1], [], 10], 1)
+    test_find_percentile([[1], [], 80], 1)
+    test_find_percentile([[1, 2], [], 10], 1)
+    test_find_percentile([[1, 2], [], 80], 2)
+    test_find_percentile([[], [1, 2], 10], 1)
+    test_find_percentile([[], [1, 2], 80], 2)
+    test_find_percentile([[1, 2], [3, 4], 100], 4)
+    test_find_percentile([[1, 2], [3, 4], 50], 2)
+    test_find_percentile([[1, 2, 7, 8, 10], [6, 12], 50], 7)
+    test_find_percentile([[1, 2, 7, 8], [6, 12], 50], 6)
+    test_find_percentile([[15, 20, 35, 40, 50], [], 30], 20)
+    test_find_percentile([[15, 20], [25, 40, 50], 40], 20)
+    test_find_percentile([[1, 99], [15, 16, 18, 20], 100], 99)
     print("Unit test passed!")
 
 
@@ -89,37 +90,40 @@ def generate_random_test(a_length, b_length, int_range_left, int_range_right, p)
 
 
 def run_stress_test(max_len, int_range, max_attempts):
-    for i in range(max_len):
-        if i % 10 == 0:
-            print(i, "out of", max_len, "done.")
-        for j in range(max_len):
-            if i == j == 0:
+    for a_len in range(max_len):
+        if a_len % 10 == 0:
+            print(a_len, "out of", max_len, "done.")
+        for b_len in range(max_len):
+            if a_len == b_len == 0:
                 pass
             else:
                 for p in range(10, 110, 10):
                     for _ in range(max_attempts):
-                        random_test = generate_random_test(i, j, 0, int_range, p)
+                        random_test = generate_random_test(a_len, b_len, 0, int_range, p)
                         answer = find_percentile_reference(*random_test)
-                        test_percentile(random_test, answer)
+                        test_find_percentile(random_test, answer)
     print("Stress test passed!")
 
 
-def run_max_test(max_attempts, max_len=10**6, int_range=100):
+def run_max_test(max_attempts, max_len=15*10**4, int_range=100):
+    time_list = []
     for i in range(max_attempts):
         if i % 5 == 0:
             print(i, "out of", max_attempts, "done.")
             for p in [1, 100]:
                 random_test = generate_random_test(max_len, max_len, int_range, int_range, p)
                 answer = find_percentile_reference(*random_test)
-                test_percentile(random_test, answer)
-    print("Max test passed!")
+                start = time()
+                test_find_percentile(random_test, answer)
+                end = time()
+                time_list.append(end - start)
+    print("Max test passed!", "Max time:", max(time_list))
 
 
 # some test code
 if __name__ == "__main__":
-    run_test()
-    #Arguments: max_len, int_range, max_attempts
-    run_stress_test(50, 10, 10)
-    # Arguments: max_attempts, max_len=10**6, int_range=100
-    run_max_test(10)
-
+    run_unit_tests()
+    # Arguments: max_len, int_range, max_attempts
+    run_stress_test(50, 10, 100)
+    # Arguments: max_attempts, max_len=15e4, int_range=100
+    run_max_test(100)

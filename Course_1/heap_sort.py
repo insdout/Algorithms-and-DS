@@ -1,3 +1,6 @@
+from random import randint
+
+
 def max_heapify(a, i, n):
     max_i = i
     if 2*i+1 < n and a[max_i] < a[2*i+1]:
@@ -22,11 +25,35 @@ def heap_sort(a):
     return a
 
 
-a = [16, 14, 10, 4, 7, 9, 3, 2, 8, 1]
-b = [1, 2, 3, 4, 7, 8, 9, 10, 14, 16]
+def generate_list(length):
+    return [randint(0, 20) for i in range(length)]
 
-print(heap_sort(b.copy()))
-build_max_heap(b, len(b))
-print(b)
-max_heapify(a, 3, len(a))
-print(a)
+
+def test_unit(length):
+    case = generate_list(length)
+    print("Test Case:", case)
+    a = case.copy()
+    answer = sorted(a.copy())
+    heap_sort(a)
+    err_string = "Failed case: {1}, answer: {2}, correct answer: {3}"
+    assert a == answer, err_string.format(case,a, answer)
+
+
+def run_tests(length, repetitions):
+    for i in range(length):
+        for j in range(repetitions):
+            test_unit(i)
+    print("Test Passed!")
+
+
+if __name__ == "__main__":
+    a = [16, 14, 10, 4, 7, 9, 3, 2, 8, 1]
+    b = [1, 2, 3, 4, 7, 8, 9, 10, 14, 16]
+
+    print(heap_sort(b.copy()))
+    build_max_heap(b, len(b))
+    print(b)
+    max_heapify(a, 3, len(a))
+    print(a)
+    print("RUN TESTS:")
+    run_tests(10, 20)

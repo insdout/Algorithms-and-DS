@@ -6,7 +6,7 @@ def partition(a, left, right):
     while left < right:
         while a[left] <= a[pivot] and left < len(a)-1:
             left += 1
-        while a[right] > a[pivot] and right > 0: #why not >=?
+        while a[right] > a[pivot] and right > 0: #why not >=?: swap right=pivot with pivot
             right -= 1
         if left < right:
             a[left], a[right] = a[right], a[left]
@@ -40,6 +40,7 @@ def run_tests(length, repetitions):
         for j in range(repetitions):
             test_unit(i)
     print("Test Passed!")
+
 
 if __name__ == "__main__":
     a = [10, 7, 8, 9, 1, 5]

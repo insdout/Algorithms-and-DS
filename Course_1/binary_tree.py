@@ -24,6 +24,7 @@ def insert(root, node):
 def inoder():
     pass
 
+
 def postoder():
     pass
 

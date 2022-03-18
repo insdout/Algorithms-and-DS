@@ -1,4 +1,4 @@
-class Node():
+class Node:
     def __init__(self, value, parent=None):
         self.key = value
         self. parent = parent
@@ -28,8 +28,6 @@ def inoder():
 
 def postoder():
     pass
-
-
 
 
 if __name__ == "__main__":

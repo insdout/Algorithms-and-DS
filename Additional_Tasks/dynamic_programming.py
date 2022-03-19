@@ -99,4 +99,88 @@ print(hanoi_tomer_min_steps(3))
 # ========================================================
 
 def bst_count(n):
-    return
+    a = [0]*(n+1)
+    a[0] = 1
+    a[1] = 1
+    if n == 1:
+        return a[1]
+    for i in range(2, n+1):
+        for j in range(i):
+            a[i] += a[j]*a[i-j-1]
+    return a[n]
+
+
+print("Answer 4")
+print(bst_count(1))
+print(bst_count(2))
+print(bst_count(3))
+print(bst_count(4))
+print(bst_count(5))
+print(bst_count(6))
+
+
+# ======================  5  =============================
+#  Найти самый длинный палиндром в строке латинских букв
+# ========================================================
+
+def largest_palindrome(s):
+    max_len = 1
+    start = 0
+    for i in range(1, len(s)):
+        left = i - 1
+        right = i
+        while left > 0 and right < len(s)-1 and s[left] == s[right]:
+            if s[left-1] == s[right+1]:
+                left -= 1
+                right += 1
+            else:
+                break
+        if right - left + 1 > max_len:
+            start = left
+            max_len = right - left + 1
+
+        left = i - 1
+        right = i + 1
+        while left > 0 and right < len(s)-1 and s[left] == s[right]:
+            if s[left-1] == s[right+1]:
+                left -= 1
+                right += 1
+            else:
+                break
+        if right - left + 1 > max_len:
+            start = left
+            max_len = right - left + 1
+    return s[start: start+max_len]
+
+s = "qwerty"
+print(largest_palindrome(s))
+s = "qweeeersrty"
+print(largest_palindrome(s))
+s = "qweeeetrsrty"
+print(largest_palindrome(s))
+s = "qwrsrtyeeee"
+print(largest_palindrome(s))
+s = "qweebbeetrsrt"
+print(largest_palindrome(s))
+
+
+# ======================  6  =============================
+#  Дан массив ячеек, заполненный натуральными числами,
+#  каждое число - максимальная длина прыжка с этой ячейки.
+#  Необходимо найти минимальное количество прыжков,
+#  которые потребуются для достижения последней ячейки
+# ========================================================
+
+def jumps(a):
+    b = [0]*len(a)
+    for i in range(1, len(a)):
+        b[i] = math.inf
+        for j in range(i):
+            if j + a[j] >= i and b[j] != math.inf:
+                b[i] = min(b[i], b[j] + 1)
+    return b
+
+
+a = [1, 3, 6, 1, 0, 9]
+print("Answer 6")
+print(jumps(a))

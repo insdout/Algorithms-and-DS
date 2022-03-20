@@ -9,12 +9,12 @@ def max_subarray(a):
     b = []
     if len(a) == 0:
         return -math.inf
-    b.append(max(a[0], 0))
+    b.append(a[0])
     if len(a) == 1:
         return b[0]
     for i in range(1, len(a)):
         b.append(max(a[i], b[i-1] + a[i]))
-    return b[-1]
+    return max(b)
 
 
 a = [-1, 1, 1, 1, -10, 1, 1, 1, 1]
@@ -180,7 +180,24 @@ def jumps(a):
                 b[i] = min(b[i], b[j] + 1)
     return b
 
+def jumps2(a):
+    b = [0]*len(a)
+    temp = a[0]
+    temp_index = 0
+    b[0] = 0
+    for i in range(1, len(a)):
+        temp -= 1
+        if temp >= 0:
+            b[i] = b[temp_index] + 1
+        else:
+            b[i] = b[i-1] + 1
+        if temp < a[i]:
+            temp = a[i]
+            temp_index = i
+    return b[-1]
 
 a = [1, 3, 6, 1, 0, 9]
 print("Answer 6")
 print(jumps(a))
+a = [1, 9, 6, 1, 0, 9]
+print(jumps2(a))

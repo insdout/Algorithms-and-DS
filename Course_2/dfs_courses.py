@@ -38,7 +38,7 @@ def sortCourses(course_list, prerequisites_dict):
 
 
 course_list = [0, 1, 2]
-prerequisites_dict = {2 : [1], 1: [0]}
+prerequisites_dict = {2: [1], 1: [0]}
 # check that your code works correctly on provided example
 assert sortCourses(course_list, prerequisites_dict) == [0, 1, 2], 'Wrong answer'
 
@@ -49,5 +49,5 @@ print("ans:",sortCourses(course_list, prerequisites_dict))
 
 print("third case")
 course_list = [0, 1, 2]
-prerequisites_dict = {1: [0, 2]}
+prerequisites_dict = {0: [0,1,2], 1: [0,1,2], 2:[0,1,2]}
 print("ans:",sortCourses(course_list, prerequisites_dict))

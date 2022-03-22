@@ -1,3 +1,8 @@
+# Question 2
+# Given an adjacency list for a graph determine if a graph is bipartite.
+# (A graph is bipartite if it's vertices can be divided in to two sets such
+# that there is no edges between vertices that are in the different sets).
+
 from collections import deque
 
 

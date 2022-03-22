@@ -106,3 +106,10 @@ course_list = [0, 1, 2, 3, 4, 5]
 prerequisites_dict = {0: [2], 1: [3, 0], 2: [3], 5: [4, 3]}
 print("ans41:",sortCourses(course_list, prerequisites_dict))
 print("ans42:",sortCourses2(course_list, prerequisites_dict))
+
+print()
+print("5th case")
+course_list = []
+prerequisites_dict = {}
+print("ans41:",sortCourses(course_list, prerequisites_dict))
+print("ans42:",sortCourses2(course_list, prerequisites_dict))

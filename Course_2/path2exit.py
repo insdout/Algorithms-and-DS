@@ -20,6 +20,7 @@ def path2exit(maze, x, y):
         for candidate in [(i - 1, j), (i, j - 1), (i + 1, j), (i, j + 1)]:
             if candidate in graph:
                 graph[vertex].append(candidate)
+    print(graph)
     visited = {v: False for v in graph.keys()}
     Q = deque()
     v_from = (x, y)
@@ -27,25 +28,27 @@ def path2exit(maze, x, y):
     visited[v_from] = True
     while len(Q) > 0 and v_from is not False:
         cur_path, cur_v = Q.pop()
+        print("cur v",cur_v, Q)
         if cur_v == v_to:
             path = cur_path
             break
         for neighbor in graph[cur_v]:
             if not visited[neighbor]:
+                temp_path = [v for v in cur_path]
                 y_dir = neighbor[0] - cur_v[0]
                 x_dir = neighbor[1] - cur_v[1]
-                print(cur_v, neighbor, x_dir, y_dir,cur_path)
+                print(cur_v, neighbor, x_dir, y_dir, cur_path)
                 if x_dir == -1 and y_dir == 0:
-                    cur_path.append("L")
+                    temp_path.append("L")
                 elif x_dir == 1 and y_dir == 0:
-                    cur_path.append("R")
+                    temp_path.append("R")
                 elif x_dir == 0 and y_dir == 1:
-                    cur_path.append("D")
+                    temp_path.append("D")
                 elif x_dir == 0 and y_dir == -1:
-                    cur_path.append("U")
+                    temp_path.append("U")
                 else:
                     raise ValueError('Not neighbor found!')
-                Q.append((cur_path, neighbor))
+                Q.append((temp_path, neighbor))
                 visited[neighbor] = True
     # YOUR CODE GOES HERE
 
@@ -60,3 +63,10 @@ if __name__ == "__main__":
     # check that your code works correctly on provided example
     print(path2exit(maze, x, y))
     assert path2exit(maze, x, y) == 'DRR', 'Wrong answer'
+
+    print()
+    maze = [['.#.'], ['...'], ['..X']]
+    x, y = 0, 0
+    # check that your code works correctly on provided example
+    print(path2exit(maze, x, y))
+    #assert path2exit(maze, x, y) == 'DRR', 'Wrong answer'

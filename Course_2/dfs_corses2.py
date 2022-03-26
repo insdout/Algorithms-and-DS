@@ -70,4 +70,3 @@ if __name__ == "__main__":
     prerequisites_dict = {0: [1], 3: [2]}
     print(sortCourses(course_list, prerequisites_dict))
     assert sortCourses(course_list, prerequisites_dict) == [1, 0, 2, 3], 'Wrong answer'
-

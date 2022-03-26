@@ -1,3 +1,10 @@
+# Given a list of courses and a list of prerequisites for each course
+# (in a form of a dict) output the list of courses sorted in such a way
+# that each course appears in this list only after all it's prerequisites.
+# If it is not possible, output -1.
+#
+# HINT: use the DFS algorithm
+
 def sortCourses(course_list, prerequisites_dict):
     n = len(course_list)
     course_order = []
@@ -70,4 +77,3 @@ if __name__ == "__main__":
     prerequisites_dict = {0: [1], 3: [2]}
     print(sortCourses(course_list, prerequisites_dict))
     assert sortCourses(course_list, prerequisites_dict) == [1, 0, 2, 3], 'Wrong answer'
-

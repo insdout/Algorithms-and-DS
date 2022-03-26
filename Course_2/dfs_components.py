@@ -34,9 +34,40 @@ def sameComponent(adj_list, vertex):
     return vertex_count
 
 
-adj_matrix = [[0, 1, 1], [1, 0, 0], [1, 0, 0]]
-vertex = 0
-# check that your code works correctly on provided example
-print(sameComponent(adj_matrix, vertex))
-assert sameComponent(adj_matrix, vertex) == 3, 'Wrong answer'
+if __name__ == "__main__":
+    adj_matrix = [[0, 1, 1], [1, 0, 0], [1, 0, 0]]
+    vertex = 0
+    # check that your code works correctly on provided example
+    print(sameComponent(adj_matrix, vertex))
+    assert sameComponent(adj_matrix, vertex) == 3, 'Wrong answer'
+
+    adj_matrix = [[0, 1, 0], [1, 0, 1], [0, 1, 0]]
+    vertex = 0
+    # check that your code works correctly on provided example
+    print(sameComponent(adj_matrix, vertex))
+    assert sameComponent(adj_matrix, vertex) == 3, 'Wrong answer'
+
+    adj_matrix = [[0, 1, 0], [1, 0, 0], [0, 0, 0]]
+    vertex = 0
+    # check that your code works correctly on provided example
+    print(sameComponent(adj_matrix, vertex))
+    assert sameComponent(adj_matrix, vertex) == 2, 'Wrong answer'
+
+    adj_matrix = [[0, 1, 0], [1, 0, 0], [0, 0, 0]]
+    vertex = 2
+    # check that your code works correctly on provided example
+    print(sameComponent(adj_matrix, vertex))
+    assert sameComponent(adj_matrix, vertex) == 1, 'Wrong answer'
+
+    adj_matrix = [[0, 1, 0, 0], [1, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+    vertex = 2
+    # check that your code works correctly on provided example
+    print(sameComponent(adj_matrix, vertex))
+    assert sameComponent(adj_matrix, vertex) == 1, 'Wrong answer'
+
+    vertex = 0
+    # check that your code works correctly on provided example
+    print(sameComponent(adj_matrix, vertex))
+    assert sameComponent(adj_matrix, vertex) == 2, 'Wrong answer'
+
 

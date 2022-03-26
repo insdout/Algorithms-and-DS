@@ -65,4 +65,18 @@ if __name__ == "__main__":
     board_size = 4
     coordinates = [(0, 0), (1, 1), (2, 2)]
     print(minRooksLeft(board_size, coordinates))
+    assert minRooksLeft(board_size, coordinates) == 3, 'Wrong answer'
+
+
+    print("Case 3")
+    board_size = 4
+    coordinates = [(0, 0), (0, 1), (2, 3)]
+    print(minRooksLeft(board_size, coordinates))
+    assert minRooksLeft(board_size, coordinates) == 2, 'Wrong answer'
+
+    print("Case 4")
+    board_size = 4
+    coordinates = [(0, 0), (0, 1), (2, 0)]
+    print(minRooksLeft(board_size, coordinates))
+    assert minRooksLeft(board_size, coordinates) == 1, 'Wrong answer'
     

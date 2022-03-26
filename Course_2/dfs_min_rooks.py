@@ -65,3 +65,4 @@ if __name__ == "__main__":
     board_size = 4
     coordinates = [(0, 0), (1, 1), (2, 2)]
     print(minRooksLeft(board_size, coordinates))
+    

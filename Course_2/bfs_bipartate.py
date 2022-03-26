@@ -18,7 +18,7 @@ def isBipartite(adj_list):
             Q.append(v)
             color[v] = 1
             while len(Q) > 0:
-                cur_v = Q.pop()
+                cur_v = Q.popleft()
                 cur_color = color[cur_v]
                 for neighbor in adj_list[cur_v]:
                     if not visited[neighbor]:
@@ -86,6 +86,18 @@ if __name__ == "__main__":
 
     print("9nd case.")
     adj_list = [[1], [2], [3, 4], [0, 4], []]
+    # False
+    print(isBipartite(adj_list))
+    assert not isBipartite(adj_list), 'Wrong answer'
+
+    print("9nd case.")
+    adj_list = [[1, 3], [0, 2], [1, 3], [0, 4], [3]]
+    # True
+    print(isBipartite(adj_list))
+    assert isBipartite(adj_list), 'Wrong answer'
+
+    print("9nd case.")
+    adj_list = [[1, 3], [0, 2], [1, 3], [0, 4], [3, 2]]
     # False
     print(isBipartite(adj_list))
     assert not isBipartite(adj_list), 'Wrong answer'

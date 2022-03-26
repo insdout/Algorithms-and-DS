@@ -27,7 +27,7 @@ def path2exit(maze, x, y):
     Q.append((path, v_from))
     visited[v_from] = True
     while len(Q) > 0 and v_from is not False:
-        cur_path, cur_v = Q.pop()
+        cur_path, cur_v = Q.popleft()
         print("cur v",cur_v, Q)
         if cur_v == v_to:
             path = cur_path
@@ -69,4 +69,11 @@ if __name__ == "__main__":
     x, y = 0, 0
     # check that your code works correctly on provided example
     print(path2exit(maze, x, y))
-    #assert path2exit(maze, x, y) == 'DRR', 'Wrong answer'
+    assert path2exit(maze, x, y) == 'DDRR', 'Wrong answer'
+
+    print()
+    maze = [['..#...'], ['#...#.'], ['#####X']]
+    x, y = 0, 0
+    # check that your code works correctly on provided example
+    print(path2exit(maze, x, y))
+    assert path2exit(maze, x, y) == 'RDRRURRDD', 'Wrong answer'

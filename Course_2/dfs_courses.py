@@ -4,6 +4,7 @@
 # If it is not possible, output -1.
 #
 # HINT: use the DFS algorithm
+
 visited = []
 order = []
 

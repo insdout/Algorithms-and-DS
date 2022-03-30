@@ -9,7 +9,7 @@ def BellmanFord(weight_matrix, v_from):
     dist = [float("inf") for i in range(n)]
 
     dist[v_from] = 0
-    for _ in range(n):
+    for _ in range(n-1):
         for i in range(n):
             for j in range(n):
                 if graph[i][j] == float("inf"):

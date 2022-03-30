@@ -11,7 +11,7 @@ def hasNegativeCycle(weight_matrix):
         if dist[start] == float("inf"):
             dist[start] = 0
             print("start:", start)
-            for _ in range(n):
+            for _ in range(n-1):
                 for i in range(n):
                     for j in range(n):
                         if weight_matrix[i][j] == float("inf"):

@@ -11,13 +11,20 @@ def closestPair(weight_matrix):
     n = len(weight_matrix)
     closest_pair = (-1, -1)
     dist = deepcopy(weight_matrix)
+    min_dist = float("inf")
     for i in range(n):
         dist[i][i] = 0
     for k in range(n):
         for i in range(n):
             for j in range(n):
                 dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
-    # YOUR CODE GOES HERE
+    for i in range(n):
+        for j in range(n):
+            if i == j:
+                continue
+            if dist[i][j] < min_dist:
+                min_dist = dist[i][j]
+                closest_pair = (i, j)
     print(dist)
     return closest_pair
 

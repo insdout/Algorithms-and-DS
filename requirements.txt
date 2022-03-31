@@ -1,7 +1,10 @@
-binarytree @ file:///home/conda/feedstock_root/build_artifacts/binarytree_1648185296529/work
+binarytree==6.5.1
 certifi==2021.10.8
-graphviz @ file:///home/conda/feedstock_root/build_artifacts/python-graphviz_1609966316231/work
-packaging @ file:///home/conda/feedstock_root/build_artifacts/packaging_1637239678211/work
-pyparsing @ file:///home/conda/feedstock_root/build_artifacts/pyparsing_1642753572664/work
-setuptools-scm @ file:///home/conda/feedstock_root/build_artifacts/setuptools_scm_1642602454341/work
-tomli @ file:///home/conda/feedstock_root/build_artifacts/tomli_1644342247877/work
+graphviz==0.16
+packaging==21.3
+pip==21.2.4
+pyparsing==3.0.7
+setuptools==58.0.4
+setuptools-scm==6.4.2
+tomli==2.0.1
+wheel==0.37.1

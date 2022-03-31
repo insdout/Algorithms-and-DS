@@ -1,7 +1,0 @@
-<application>
-  <component name="GithubAccounts">
-    <account name="insdout" id="47a949ad-5f50-4fd7-92b2-3f67aa5257b6">
-      <server host="github.com" />
-    </account>
-  </component>
-</application>

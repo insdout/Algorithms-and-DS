@@ -14,7 +14,6 @@ def dijkstra(adj_matrix, v_from, v_to):
     distance = [float("inf") for i in range(n)]
     heap = []
     used = [False for i in range(n)]
-    prev = [False for i in range(n)]
     heappush(heap, (0, v_from))
     distance[v_from] = 0
 
@@ -29,11 +28,10 @@ def dijkstra(adj_matrix, v_from, v_to):
             if not used[u] and c != float("inf") and d + c < distance[u]:
                 distance[u] = d + c
                 heappush(heap, (distance[u], u))
-                prev[u] = v
 
     # YOUR CODE GOES HERE
 
-    return distance[v_to], prev
+    return distance[v_to]
 
 if __name__ == "__main__":
     adj_matrix = [[float('inf'), 5, 2],

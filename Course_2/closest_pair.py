@@ -20,7 +20,7 @@ def closestPair(weight_matrix):
                 dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
     for i in range(n):
         for j in range(n):
-            if i == j:
+            if i == j and weight_matrix[i][j] == float("inf"):
                 continue
             if dist[i][j] < min_dist:
                 min_dist = dist[i][j]
@@ -35,3 +35,10 @@ if __name__ == "__main__":
     # check that your code works correctly on provided example
     print(closestPair(weight_matrix))
     assert closestPair(weight_matrix) == (1, 2), 'Wrong answer'
+
+    weight_matrix = [[0, 5, 2],
+                     [5, float('inf'), 1],
+                     [2, 1, float('inf')]]
+    # check that your code works correctly on provided example
+    print(closestPair(weight_matrix))
+    assert closestPair(weight_matrix) == (0, 0), 'Wrong answer'

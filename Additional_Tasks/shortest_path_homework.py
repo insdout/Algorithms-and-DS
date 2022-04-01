@@ -3,6 +3,7 @@
 
 from collections import deque
 
+
 def min_moves_knight(board_size, v_from, v_to):
     adj_list = {}
     for i in range(board_size):
@@ -40,3 +41,38 @@ def distance(adj_list, v_from, v_to):
 assert min_moves_knight(4, (0, 0), (1, 2)) == 1, "Wrong Answer"
 assert min_moves_knight(4, (0, 0), (0, 2)) == 2, "Wrong Answer"
 assert min_moves_knight(4, (0, 0), (2, 3)) == 3, "Wrong Answer"
+
+
+# 4.
+# Запрограммировать префикс-функцию. С ее помощью проверить вхождение подстроки в строку
+
+
+def prefix(s):
+    n = len(s)
+    p = [0 for _ in range(n)]
+    p[0] = 0
+    for j in range(1, n):
+        i = p[j-1]
+        while i > 0 and s[i] != s[j]:
+            i = p[i-1]
+        if s[i] == s[j]:
+            p[j] = i + 1
+    return p
+
+print(prefix("bababacbba"))
+
+
+def substring_match(s, pattern):
+    q = pattern + "#" + s
+    prefix_array = prefix(q)
+    match_indexes = [i - len(pattern) - 1 for i in range(len(q)) if prefix_array[i] == len(pattern)]
+    for index in match_indexes:
+        start = index - len(pattern) + 1
+        end = index + 1
+        print("from:", start, "to:", end - 1, "string:", s[start:end])
+    return match_indexes
+
+
+s = "ertqwertyert"
+p = "ert"
+print(substring_match(s, p))

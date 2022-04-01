@@ -30,10 +30,17 @@ def dijkstra(adj_matrix, v_from, v_to):
                 heappush(heap, (distance[u], u))
 
     # YOUR CODE GOES HERE
-
+    if distance[v_to] == float("inf"):
+        distance[v_to] = -1
     return distance[v_to]
 
 if __name__ == "__main__":
+    adj_matrix = [[1, 5, float('inf')],
+                  [5, 1, float('inf')],
+                  [float('inf'), float('inf'), 1]]
+    v_from, v_to = 0, 2
+    print(dijkstra(adj_matrix, v_from, v_to))
+
     adj_matrix = [[float('inf'), 5, 2],
                   [5, float('inf'), float('inf')],
                   [2, float('inf'), float('inf')]]

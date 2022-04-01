@@ -16,9 +16,6 @@ def BellmanFord(weight_matrix, v_from):
                     continue
                 if dist[j] > dist[i] + graph[i][j]:
                     dist[j] = dist[i] + graph[i][j]
-
-    # YOUR CODE GOES HERE
-
     return dist
 
 if __name__ == "__main__":

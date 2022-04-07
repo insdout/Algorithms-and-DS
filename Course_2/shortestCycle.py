@@ -1,4 +1,5 @@
-
+# String S has been written over and over and over, and you are presented with a result:
+# "SSSSSSS...". Find the length of the shortest possible S.
 
 def z_function(text):
     n = len(text)
@@ -30,19 +31,14 @@ def shortestCycle(s):
     res = len(s)
     for i in range(n-1, n//2 - 1, -1):
         candidate = z_array[i]
-        print(candidate + i, n, "i:", i, "z[i]:", candidate)
         if candidate != 0 and candidate + i == n:
             if n % candidate != 0:
-                print("catch here")
                 continue
             flag = True
             for j in range(candidate, n, candidate):
-                print("j:", j, "n:", n)
                 if z_array[j] < candidate:
-                    print("break")
                     flag = False
                     break
-                print("z", z_array[j], n)
             if flag:
                 return candidate
     return res
@@ -62,3 +58,7 @@ assert shortestCycle(cyclic_string) == 3, 'Wrong answer'
 cyclic_string = 'acac'
 # check that your code works correctly on provided example
 assert shortestCycle(cyclic_string) == 2, 'Wrong answer'
+
+cyclic_string = "babbbabb"
+# check that your code works correctly on provided example
+assert shortestCycle(cyclic_string) == 4, 'Wrong answer'

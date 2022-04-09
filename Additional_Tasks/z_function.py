@@ -33,7 +33,3 @@ if __name__ == "__main__":
     print(z_algorithm(text, pattern))
     assert z_algorithm(text, pattern) == [], 'Wrong answer'
 
-    text = 'abracadabra'
-    pattern = 'ab'
-    # check that your code works correctly on provided example
-    #assert RabinKarp(text, pattern) == [0, 7], 'Wrong answer'

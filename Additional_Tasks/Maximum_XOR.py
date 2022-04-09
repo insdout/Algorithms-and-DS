@@ -16,9 +16,11 @@
 # Runtime: 7133 ms, faster than 16.25% of Python3 online submissions for Maximum XOR of Two Numbers in an Array.
 # Memory Usage: 144.3 MB, less than 12.88% of Python3 online submissions for Maximum XOR of Two Numbers in an Array.
 
+
 class Trie_Node:
     def __init__(self):
         self.children = {}
+
 
 class Trie:
     def __init__(self):

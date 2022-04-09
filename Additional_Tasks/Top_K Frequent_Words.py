@@ -10,8 +10,8 @@
 # Explanation: "i" and "love" are the two most frequent words.
 # Note that "i" comes before "love" due to a lower alphabetical order.
 
-# Runtime: 51 ms, faster than 97.76% of Python3 online submissions for Top K Frequent Words.
-# Memory Usage: 13.9 MB, less than 68.17% of Python3 online submissions for Top K Frequent Words.
+# Runtime: 73 ms, faster than 60.71% of Python3 online submissions for Top K Frequent Words.
+# Memory Usage: 13.9 MB, less than 68.45% of Python3 online submissions for Top K Frequent Words.
 
 def topKFrequent(words: list[str], k: int) -> list[str]:
     d = {}

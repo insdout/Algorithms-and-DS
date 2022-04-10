@@ -103,13 +103,15 @@ def find_common_ancestor(root, u, v):
     path_u = []
     path_v = []
     while u_ref != root:
-        path_u.insert(0, u_ref.key)
+        path_u.append(u_ref.key)
         u_ref = parent_dict[u_ref]
-    path_u.insert(0, root.key)
+    path_u.append(root.key)
+    path_u = path_u[::-1]
     while v_ref != root:
-        path_v.insert(0, v_ref.key)
+        path_v.append(v_ref.key)
         v_ref = parent_dict[v_ref]
-    path_v.insert(0, root.key)
+    path_v.append(root.key)
+    path_v = path_v[::-1]
     i = 0
     while path_v[i] == path_u[i]:
         common_ancestor = path_v[i]

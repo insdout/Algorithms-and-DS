@@ -15,28 +15,23 @@ def minRestarts(m, t, no_request_times):
         server_run_time = no_request_times[0]
         if cur_time + t - server_run_time >= m:
             return min_restarts
-        elif cur_time + t +1 >= m:
+        elif cur_time + t + 1 >= m:
             return min_restarts + 1
     else:
         return -1
-    print(cur_time, server_run_time, min_restarts)
     for pause_time in no_request_times[1:]:
-        print("pause:", pause_time, "cur time:", cur_time)
         if min(pause_time - cur_time, m) > t + 1:
             return -1
         elif min(pause_time - cur_time - 1, m) <= t - server_run_time - 1:
             server_run_time += pause_time - cur_time
             cur_time = pause_time
-            print("no restart", server_run_time, cur_time, min_restarts)
         else:
             server_run_time = pause_time - cur_time - 1
             cur_time = pause_time
             min_restarts += 1
-            print("restart", server_run_time, cur_time, min_restarts)
-        print("check", cur_time + t - server_run_time, cur_time)
         if cur_time + t - server_run_time >= m:
             return min_restarts
-        elif cur_time + t +1 >= m:
+        elif cur_time + t + 1 >= m:
             return min_restarts + 1
     return -1
 

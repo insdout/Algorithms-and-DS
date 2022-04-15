@@ -36,3 +36,7 @@ if __name__ == "__main__":
     set_sizes = []
     # check that your code works correctly on provided example
     assert minUnionCost(set_sizes) == 0, 'Wrong answer'
+
+    set_sizes = [2]
+    # check that your code works correctly on provided example
+    assert minUnionCost(set_sizes) == 2, 'Wrong answer'

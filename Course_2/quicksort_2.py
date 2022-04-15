@@ -1,5 +1,9 @@
 # Need to fix partition function!!!
 
+# Given an array and a pivot element index, implement the partition function:
+# move all the elements smaller than pivot element to the left of it and all the elements larger than it to the right.
+# Return the array after partition.
+
 def partition_h(a, left, right):
     pivot = left
     while left < right:

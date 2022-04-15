@@ -1,4 +1,5 @@
-#
+# Given an array of integers, and the bounds for values in the array,
+# return the array sorted in an increasing order using the Counting Sort algorithm.
 
 def countingsort(array, lowerbound, upperbound):
     n = len(array)

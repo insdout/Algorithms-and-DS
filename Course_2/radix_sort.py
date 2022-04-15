@@ -27,7 +27,27 @@ def radixsort(names):
         print(names)
     return names
 
+def radixsort2(names):
+    n = len(names)
 
+    if n == 0:
+        return names
+
+    longest = max(names, key=len)
+    buckets = [[] for _ in range(0, 123)]
+
+    for position in reversed(range(0, len(longest))):
+        for string in names:
+            index = 0
+            if position < len(string):
+                index = ord(string[position])
+            buckets[index].append(string)
+        del names[:]
+        for bucket in buckets:
+            names.extend(bucket)
+            del bucket[:]
+    print(names)
+    return names
 
 arr = []
 # check that your code works correctly on provided example
@@ -58,4 +78,10 @@ assert radixsort(arr) == sorted_arr, 'Wrong answer'
 arr = ["asasw", "Asanxs", "ashdcx", "Ghs", "A"]
 # check that your code works correctly on provided example
 print("started")
-assert radixsort(arr) == sorted(arr), 'Wrong answer'
+assert radixsort2(arr) == sorted(arr), 'Wrong answer'
+
+arr = ['Zaxb', 'Az', 'Bxa', "Ab", "Ba", 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz']
+# check that your code works correctly on provided example
+print("sorted:", sorted(arr.copy()))
+print("radix:",radixsort2(arr.copy()))
+assert radixsort2(arr) == sorted(arr), 'Wrong answer'

@@ -5,7 +5,13 @@ class ListNode:
     def __init__(self, val, next_node=None):
         self.val = val
         self.next = next_node
-
+    def __repr__(self):
+        l = [self.val]
+        node = self.next
+        while node:
+            l.append(node.val)
+            node = node.next
+        return str(l)
 
 class LinkedList:
     def __init__(self, values=None):
@@ -29,30 +35,38 @@ class LinkedList:
         while node:
             str_repr.append(node.val)
             node = node.next
-        return(str(str_repr))
+        return str(str_repr)
 
-
-ll = LinkedList([7,1,2,3])
-print(ll)
 
 def swapPairs(head):
     if not head:
         return head
-    if head.next == None:
+    if head.next is None:
         return head
 
-    next_pair = None
-    if head.next.next:
-        prev_pair_end = head
-        tmp = head.next.next
-        head.next, head.next.next = next_pair, head
-    head = tmp
 
-    next_pair = None
-    prev_pair_end = None
-    while head.next:
-        tmp = head.next
-        tmp_head = head
-        head, head.next = next_pair, head
-        head.next = prev_pair_end
-        prev_pair_end = head
+    prev_node = None
+    cur_node = head
+
+    while cur_node and cur_node.next:
+        print("============")
+        print("start:", cur_node)
+        tmp = cur_node
+        tmp2 = cur_node.next
+        print(id(tmp), id(cur_node), tmp == cur_node, tmp is cur_node) #    <- 140539211660784 140539211660784 True True
+        tmp.next, tmp2.next = tmp2.next, tmp #                              <-  Работает
+        #cur_node.next, cur_node.next.next = cur_node.next.next, cur_node   <-  Не работает
+        print("tmp", tmp,"tmp2", tmp2)
+        cur_node = tmp2
+        print("cur_node", cur_node)
+        if prev_node:
+            prev_node.next = cur_node
+        else:
+            head = cur_node
+        prev_node = cur_node.next
+        cur_node = cur_node.next.next
+    return head
+
+ll = LinkedList([7, 1, 2, 3])
+print(ll)
+print("sw:", swapPairs(ll.head))

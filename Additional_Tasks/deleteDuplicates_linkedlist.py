@@ -1,9 +1,7 @@
-# Definition for singly-linked list.
 # Given a linked list, swap every two adjacent nodes and return its head.
 # You must solve the problem without modifying the values in the list's nodes
 # (i.e., only nodes themselves may be changed.)
 #
-
 # Example 1:
 # Input: head = [1,2,3,4]
 # Output: [2,1,4,3]
@@ -44,36 +42,30 @@ class LinkedList:
             node = node.next
         return str(str_repr)
 
-
-def swapPairs(head):
-    if not head:
-        return head
-    if head.next is None:
-        return head
-
-
-    prev_node = None
-    cur_node = head
-
-    while cur_node and cur_node.next:
-        print("============")
-        print("start:", cur_node)
-        tmp = cur_node
-        tmp2 = cur_node.next
-        print(id(tmp), id(cur_node), tmp == cur_node, tmp is cur_node) #    <- 140539211660784 140539211660784 True True
-        tmp.next, tmp2.next = tmp2.next, tmp #                              <-  Работает
-        #cur_node.next, cur_node.next.next = cur_node.next.next, cur_node   <-  Не работает
-        print("tmp", tmp,"tmp2", tmp2)
-        cur_node = tmp2
-        print("cur_node", cur_node)
-        if prev_node:
-            prev_node.next = cur_node
+def deleteDuplicates(head):
+    node = head
+    prev = None
+    while node:
+        if prev and prev.val == node.val:
+            prev.next = node.next
+            node = node.next
+            print("if", head)
         else:
-            head = cur_node
-        prev_node = cur_node.next
-        cur_node = cur_node.next.next
+            prev = node
+            node = node.next
+            print("else", head)
+        print("list", head)
     return head
 
-ll = LinkedList([7, 1, 2, 3])
+
+ll = LinkedList([7, 7, 1, 2, 2, 3, 3])
 print(ll)
-print("sw:", swapPairs(ll.head))
+print("Answer:", deleteDuplicates(ll.head))
+
+ll = LinkedList([7, 7])
+print(ll)
+print("Answer:", deleteDuplicates(ll.head))
+
+ll = LinkedList([7])
+print(ll)
+print("Answer:", deleteDuplicates(ll.head))

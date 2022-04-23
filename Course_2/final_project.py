@@ -66,22 +66,21 @@
 #     Jojo Rabbit - 1/1.5 = 0.66666
 #     Ford v Ferrari - 0/4 = 0
 #
-from typing import List
 
 movies = ["Parasite", "1917", "Ford v Ferrari", "Jojo Rabbit", "Joker"]
 similarities = [["Parasite", "1917"],
                 ["Parasite", "Jojo Rabbit"],
                 ["Joker", "Ford v Ferrari"]]
 friends = [["Joker"],
-            ["Joker", "1917"],
-            ["Joker"],
-            ["Parasite"],
-            ["1917"],
-            ["Jojo Rabbit", "Joker"]]
-
+           ["Joker", "1917"],
+           ["Joker"],
+           ["Parasite"],
+           ["1917"],
+           ["Jojo Rabbit", "Joker"]]
 
 import numpy as np
 from collections import Counter
+
 
 # m = |movies|
 # s = |similarities|
@@ -90,96 +89,95 @@ from collections import Counter
 class Database:
     def __init__(self, movies, similarities):
         self.movies = movies
-        self.movie_to_index = self.get_movie_to_index()                 # O(m)
-        self.adjacency_list = self.get_adjacency_list(similarities)     # O(m+s)
-        self.connected_components = self.get_connected_components()     # O(m+s)
-        self.movie_to_component = self.get_component_assignment()       # O(m)
+        self.movie_to_index = self.get_movie_to_index()                     # O(m)
+        self.adjacency_list = self.get_adjacency_list(similarities)         # O(m+s)
+        self.connected_components = self.get_connected_components()         # O(m+s)
+        self.movie_to_component = self.get_component_assignment()           # O(m)
 
-    def get_movie_to_index(self):                                       # O(m)
-        d = {}
-        for ind, movie in enumerate(self.movies):
-            d[movie] = ind
+    def get_movie_to_index(self):                                           # Total: O(m)
+        d = {}                                                              # O(1)
+        for ind, movie in enumerate(self.movies):                           # O(m)
+            d[movie] = ind                                                      # O(1)
         return d
 
-    def get_adjacency_list(self, similarities):                 # Total: O(m+s)
-        adj_list = [set() for _ in range(len(self.movies))]     # O(m)
-        for movie1, movie2 in similarities:                     # O(s)
-            ind1 = self.movie_to_index[movie1]                      # O(1)
-            ind2 = self.movie_to_index[movie2]                      # O(1)
-            if ind2 not in adj_list[ind1]:                          # O(1) adj_list[ind1] : set
-                adj_list[ind1].add(ind2)                            # O(1) adj_list[ind1] : set
-            if ind1 not in adj_list[ind2]:                          # O(1) adj_list[ind2] : set
-                adj_list[ind2].add(ind1)                            # O(1) adj_list[ind2] : set
+    def get_adjacency_list(self, similarities):                             # Total: O(m+s)
+        adj_list = [set() for _ in range(len(self.movies))]                 # O(m)
+        for movie1, movie2 in similarities:                                 # O(s)
+            ind1 = self.movie_to_index[movie1]                                  # O(1)
+            ind2 = self.movie_to_index[movie2]                                  # O(1)
+            if ind2 not in adj_list[ind1]:                                      # O(1) adj_list[ind1] : set
+                adj_list[ind1].add(ind2)                                        # O(1) adj_list[ind1] : set
+            if ind1 not in adj_list[ind2]:                                      # O(1) adj_list[ind2] : set
+                adj_list[ind2].add(ind1)                                        # O(1) adj_list[ind2] : set
         return adj_list
 
-    def dfs(self, node, visited):                               # O(m+s)
-        # DFS implementation O(V+E)
-        stack = [node]
-        component = {node}
-        while stack:
-            node = stack.pop()
-            component.update([node])
-            if visited[node]:
-                continue
-            visited[node] = True
-            for neighbour in self.adjacency_list[node]:
-                if not visited[neighbour]:
-                    stack.append(neighbour)
+    def dfs(self, node, visited):                                           # Total: O(m+s)
+        stack = [node]                                                      # O(1)
+        component = {node}                                                  # O(1)
+        while stack:                                                        # O(m+s) Visit vertices only once
+            node = stack.pop()                                                  # O(1)
+            component.update([node])                                            # O(1)
+            if visited[node]:                                                   # O(1)
+                continue                                                        # O(1)
+            visited[node] = True                                                # O(1)
+            for neighbour in self.adjacency_list[node]:                         # O(|adjacent vertices|)
+                if not visited[neighbour]:                                          # O(1)
+                    stack.append(neighbour)                                         # O(1)
         return component, visited
 
-    def get_connected_components(self):                             # O(m+s)
-        # Находим компоненты связности
-        # Для каждого непосещенного фильма запускаем DFS O(m+s)
-        n = len(self.movies)
-        components = []
-        visited = [False for _ in range(n)]
-        for ind in range(n):
-            if not visited[ind]:
-                component, visited = self.dfs(ind, visited)
-                components.append(set(map(lambda x: self.movies[x], component)))
+    def get_connected_components(self):                                             # Total: O(m+s)
+        n = len(self.movies)                                                        # O(1)
+        components = []                                                             # O(1)
+        visited = [False for _ in range(n)]                                         # O(m)
+        for ind in range(n):                                                        # O(m)
+            if not visited[ind]:                                                        # O(1)
+                component, visited = self.dfs(ind, visited)                             # O(|V|+|E|) in this component
+                components.append(set(map(lambda x: self.movies[x], component)))        # O(1)
         return components
 
-    def get_component_assignment(self):                                     # Total  O(m)
-        assignment_dict = {}                                                # O(1)
-        for ind, component in enumerate(self.connected_components):         # O(m) |U{components}| = |m|
-            for movie in component:
-                assignment_dict[movie] = ind
+    def get_component_assignment(self):                                             # Total  O(m)
+        assignment_dict = {}                                                        # O(1)
+        for ind, component in enumerate(self.connected_components):                 # O(m) |U{components}| = |m|
+            for movie in component:                                                     # O(|component|)
+                assignment_dict[movie] = ind                                            # O(1)
         return assignment_dict
 
-    def count_films(self, friends):
-        flat_list = []  # O(1)
-        for item in friends:  # O(f)
-            flat_list.extend(item)  # Тут вопрос
-        d = Counter(flat_list)
+    def count_films(self, friends):                                                 # Total: O(f)
+        flat_list = []                                                              # O(1)
+        for item in friends:                                                        # O(f) |U{friend list}| = |f|
+            flat_list.extend(item)                                                      # O(|friend list|)
+        d = Counter(flat_list)                                                      # O(f)
         return d
 
-    def get_discussability(self, friends):                          # Total O(f+m) ????
-        # Считаем количество каждого фильма в friends O(N)
-        n = len(self.movies)                                        # O(1)
-        d = self.count_films(friends)                               # O(f) ???
-        F = [0 for _ in range(n)]                                   # O(m)
-        for ind, movie in enumerate(self.movies):                   # O(m)
-            F[ind] = d.get(movie, 0)                                    # O(1)
-        return F
+    def get_discussability(self, friends):                                          # Total O(f+m)
+        n = len(self.movies)                                                        # O(1)
+        d = self.count_films(friends)                                               # O(f)
+        f = [0 for _ in range(n)]                                                   # O(m)
+        for ind, movie in enumerate(self.movies):                                   # O(m)
+            f[ind] = d.get(movie, 0)                                                    # O(1)
+        return f
 
-    def get_uniqueness(self, friends):                                                      # Total O(m^2 * f)
-        s = []
-        for index, movie in enumerate(self.movies):                                         # O(m)
-            temp = []                                                                           # O(1)
-            component = self.connected_components[self.movie_to_component[movie]]               # O(m+s)
-            for similar_movie in component - {movie}:                                           # O(m)
-                movie_count = 0                                                                     # O(1)
-                for friend_list in friends:                                                         # O(f)
-                    movie_count += sum([1 for i in friend_list if i == similar_movie])                  # тут тоже вопрос
-                temp.append(movie_count)                                                            # O(1)
-            s.append(np.mean(temp))                                                             # O(1)
+    def get_uniqueness(self, friends):                                                  # Total O(m)
+        s = []                                                                          # O(1)
+        film_counts = self.count_films(friends)                                         # O(f)
+        component_counts = [tuple() for _ in range(len(self.connected_components))]     # O(c)
+        for ind, component in enumerate(self.connected_components):                     # O(m) |U{components}| = |m|
+            component_counts[ind] = (                                                       # O(1)
+                sum([film_counts.get(f, 0) for f in component]),                            # O(|component|)
+                len(component))                                                             # O(1)
+
+        for index, movie in enumerate(self.movies):                                     # O(m)
+            component_id = self.movie_to_component[movie]                                   # O(1)
+            component_sum, cardinality = component_counts[component_id]                     # O(1)
+            s.append((component_sum - film_counts[movie])/(cardinality-1))                  # O(1)
         return s
 
-    def get_recommendation(self, friends):                                              # Total O(m^2 * f)
-        f = self.get_discussability(friends)                                                # O(f+m) ????
-        s = self.get_uniqueness(friends)                                                    # O(m^2 * f)
-        rating = [f/s if s != 0 else 0 for f, s in zip(f, s)]                               # O(m)
-        return self.movies[np.argmax(rating)]                                               # O(m)
+    def get_recommendation(self, friends):                                              # Total O(f+m)
+        f = self.get_discussability(friends)                                            # O(f+m)
+        s = self.get_uniqueness(friends)                                                # O(m)
+        rating = [f / s if s != 0 else 0 for f, s in zip(f, s)]                         # O(m)
+        print(rating)
+        return self.movies[np.argmax(rating)]                                           # O(m)
 
 
 if __name__ == "__main__":

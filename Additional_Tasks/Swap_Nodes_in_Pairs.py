@@ -48,7 +48,7 @@ class LinkedList:
 def swapPairs(head):
     if not head:
         return head
-    if head.next is None:
+    if not head.next:
         return head
 
 
@@ -62,7 +62,7 @@ def swapPairs(head):
         tmp2 = cur_node.next
         print(id(tmp), id(cur_node), tmp == cur_node, tmp is cur_node) #    <- 140539211660784 140539211660784 True True
         tmp.next, tmp2.next = tmp2.next, tmp #                              <-  Работает
-        #cur_node.next, cur_node.next.next = cur_node.next.next, cur_node   <-  Не работает
+        #cur_node.next, cur_node.next.next = cur_node.next.next, cur_node  # <-  Не работает
         print("tmp", tmp,"tmp2", tmp2)
         cur_node = tmp2
         print("cur_node", cur_node)

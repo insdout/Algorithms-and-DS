@@ -67,16 +67,6 @@
 #     Ford v Ferrari - 0/4 = 0
 #
 
-movies = ["Parasite", "1917", "Ford v Ferrari", "Jojo Rabbit", "Joker"]
-similarities = [["Parasite", "1917"],
-                ["Parasite", "Jojo Rabbit"],
-                ["Joker", "Ford v Ferrari"]]
-friends = [["Joker"],
-           ["Joker", "1917"],
-           ["Joker"],
-           ["Parasite"],
-           ["1917"],
-           ["Jojo Rabbit", "Joker"]]
 
 import numpy as np
 from collections import Counter
@@ -103,12 +93,16 @@ class Database:
     def get_adjacency_list(self, similarities):                             # Total: O(m+s)
         adj_list = [set() for _ in range(len(self.movies))]                 # O(m)
         for movie1, movie2 in similarities:                                 # O(s)
-            ind1 = self.movie_to_index[movie1]                                  # O(1)
-            ind2 = self.movie_to_index[movie2]                                  # O(1)
-            if ind2 not in adj_list[ind1]:                                      # O(1) adj_list[ind1] : set
-                adj_list[ind1].add(ind2)                                        # O(1) adj_list[ind1] : set
-            if ind1 not in adj_list[ind2]:                                      # O(1) adj_list[ind2] : set
-                adj_list[ind2].add(ind1)                                        # O(1) adj_list[ind2] : set
+            try:
+                ind1 = self.movie_to_index[movie1]                                  # O(1)
+                ind2 = self.movie_to_index[movie2]                                  # O(1)
+                if ind2 not in adj_list[ind1]:                                      # O(1) adj_list[ind1] : set
+                    adj_list[ind1].add(ind2)                                        # O(1) adj_list[ind1] : set
+                if ind1 not in adj_list[ind2]:                                      # O(1) adj_list[ind2] : set
+                    adj_list[ind2].add(ind1)                                        # O(1) adj_list[ind2] : set
+            except KeyError as err:
+                err_msg = "Warning! Similar movie \"{}\" not in movies!"
+                print(err_msg.format(err.args[0]))
         return adj_list
 
     def dfs(self, node, visited):                                           # Total: O(m+s)
@@ -169,7 +163,8 @@ class Database:
         for index, movie in enumerate(self.movies):                                     # O(m)
             component_id = self.movie_to_component[movie]                                   # O(1)
             component_sum, cardinality = component_counts[component_id]                     # O(1)
-            s.append((component_sum - film_counts[movie])/(cardinality-1))                  # O(1)
+            s.append((component_sum - film_counts[movie])/(cardinality-1)                   # O(1)
+                     if cardinality > 1 else 0)
         return s
 
     def get_recommendation(self, friends):                                              # Total O(f+m)
@@ -181,6 +176,17 @@ class Database:
 
 
 if __name__ == "__main__":
+    movies = ["Parasite", "1917", "Ford v Ferrari", "Jojo Rabbit", "Joker"]
+    similarities = [["Parasite", "1917"],
+                    ["Parasite", "Jojo Rabbit"],
+                    ["Joker", "Ford v Ferrari"]]
+    friends = [["Joker"],
+               ["Joker", "1917"],
+               ["Joker"],
+               ["Parasite"],
+               ["1917"],
+               ["Jojo Rabbit", "Joker"]]
+
     db = Database(movies, similarities)
     print(db.adjacency_list)
     print(movies)

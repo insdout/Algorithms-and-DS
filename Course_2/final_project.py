@@ -68,13 +68,13 @@
 #
 
 
-import numpy as np
-from collections import Counter
-
-
 # m = |movies|
 # s = |similarities|
 # f = |friends|
+
+from collections import Counter
+from numpy import argmax
+
 
 class Database:
     def __init__(self, movies, similarities):
@@ -172,7 +172,7 @@ class Database:
         s = self.get_uniqueness(friends)                                                # O(m)
         rating = [f / s if s != 0 else 0 for f, s in zip(f, s)]                         # O(m)
         print(rating)
-        return self.movies[np.argmax(rating)]                                           # O(m)
+        return self.movies[argmax(rating)]                                              # O(m)
 
 
 if __name__ == "__main__":
@@ -185,6 +185,26 @@ if __name__ == "__main__":
                ["Joker"],
                ["Parasite"],
                ["1917"],
+               ["Jojo Rabbit", "Joker"]]
+
+    db = Database(movies, similarities)
+    print(db.adjacency_list)
+    print(movies)
+    print(db.get_discussability(friends))
+    print(db.connected_components)
+    print(db.movie_to_component)
+    print(db.get_uniqueness(friends))
+    print(db.get_recommendation(friends))
+
+    movies = ["Parasite", "1917", "Ford v Ferrari", "Jojo Rabbit", "Joker", "Alien"]
+    similarities = [["Parasite", "1917"],
+                    ["Parasite", "Jojo Rabbit"],
+                    ["Joker", "Ford v Ferrari"]]
+    friends = [["Joker", "Parasite"],
+               ["Joker", "1917"],
+               ["Joker", "Parasite", "Alien"],
+               ["Parasite"],
+               ["1917","Parasite"],
                ["Jojo Rabbit", "Joker"]]
 
     db = Database(movies, similarities)

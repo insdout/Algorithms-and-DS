@@ -55,8 +55,8 @@ class DLList:
 
         node_p = node.prev
         node_n = node.next
-        node_p.next = node_n
-        node_n.prev = node_p
+        node_p.next, node_n.prev = node_n, node_p
+
 
     def rise_on_top(self, node):
         if self.tail == node:
@@ -85,8 +85,7 @@ class DLList:
             self.tail = node
         else:
             tmp = self.tail
-            node.prev = tmp
-            tmp.next = node
+            node.prev, tmp.next = tmp, node
             self.tail = node
             self.tail.next = None
 
@@ -150,3 +149,57 @@ if __name__ == "__main__":
     lRUCache.put(3, 33)
     lRUCache.put(5, 55)
     lRUCache.put(1, 11)
+
+# Красиво, надо посмотреть потом:
+
+# class Node:
+#     def __init__(self, key, value):
+#         self.key = key
+#         self.val = value
+#         self.prev = None
+#         self.next = None
+#
+# class LRUCache:
+#
+#     def __init__(self, capacity: int):
+#         self.size = capacity
+#         self.cache = {}
+#         self.head = Node(0,0)
+#         self.tail = Node(0,0)
+#         self.head.next = self.tail
+#         self.tail.prev = self.head
+#
+#     def _add(self, node):
+#         prev, nxt = self.tail.prev, self.tail
+#         node.prev, node.next = prev, nxt
+#         prev.next, nxt.prev = node, node
+#
+#     def _remove(self, node):
+#         prev, nxt = node.prev, node.next
+#         prev.next, nxt.prev = nxt, prev
+#
+#     def get(self, key: int) -> int:
+#         if key in self.cache:
+#             self._remove(self.cache[key])
+#             self._add(self.cache[key])
+#             return self.cache[key].val
+#         return -1
+#
+#     def put(self, key: int, value: int) -> None:
+#         if key in self.cache:
+#             self._remove(self.cache[key])
+#         node = Node(key, value)
+#         self.cache[key] = node
+#         self._add(node)
+#
+#         if len(self.cache) > self.size:
+#             lru = self.head.next
+#             self._remove(lru)
+#             del self.cache[lru.key]
+#
+#
+#
+# # Your LRUCache object will be instantiated and called as such:
+# # obj = LRUCache(capacity)
+# # param_1 = obj.get(key)
+# # obj.put(key,value)

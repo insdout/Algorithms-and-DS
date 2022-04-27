@@ -72,8 +72,6 @@
 # s = |similarities|
 # f = |friends|
 
-
-
 from collections import Counter
 from numpy import argmax
 
@@ -81,16 +79,15 @@ from numpy import argmax
 class RecommenderSystem:
 
     def __init__(self, movies, similarities):
-        self.movies = movies                                                #           type: list[str]
-        self.movie_to_index = self.get_movie_to_index()                     # O(m)      type: Dict[str, int]
-        self.adjacency_list = self.get_adjacency_list(similarities)         # O(m+s)    type: List[set]
-        self.connected_components = self.get_connected_components()         # O(m+s)    type: List[set]
-        self.movie_to_component = self.get_component_assignment()           # O(m)      type: Dict[str, int]
+        self.movies = movies                                                        #           type: list[str]
+        self.movie_to_index = self.get_movie_to_index()                             # O(m)      type: Dict[str, int]
+        self.connected_components = self.get_connected_components(similarities)     # O(m+s)    type: List[set]
+        self.movie_to_component = self.get_component_assignment()                   # O(m)      type: Dict[str, int]
 
-    def get_movie_to_index(self):                                           # Total: O(m)
+    def get_movie_to_index(self):                                                   # Total: O(m)
         """
-
-        :return:
+        Creates dictionary to map movie title to index.
+        :return:  dict[str, int]
         """
         d = {}                                                              # O(1)
         for ind, movie in enumerate(self.movies):                           # O(m)
@@ -99,9 +96,11 @@ class RecommenderSystem:
 
     def get_adjacency_list(self, similarities):                             # Total: O(m+s)
         """
-
-        :param similarities:
-        :return:
+        Creates adjacency lis from list of similarities.
+        We add only edges in similarities: total 2*|S|,
+        twice as the graph is undirected.
+        :param similarities:  list[list[str]]
+        :return:  list[set]
         """
         adj_list = [set() for _ in range(len(self.movies))]                 # O(m)
         for movie1, movie2 in similarities:                                 # O(s)
@@ -117,12 +116,15 @@ class RecommenderSystem:
                 print(err_msg.format(err.args[0]))
         return adj_list
 
-    def dfs(self, node, visited):                                           # Total: O(m+s)
+    def dfs(self, node, visited, adjacency_list):                           # Total: O(m+s)
         """
-
-        :param node:
-        :param visited:
-        :return:
+        Performs DFS starting from given node.
+        Visit all vertices in current connected component and returns
+        set of vertices in component and updates visited list.
+        :param node: int
+        :param visited:  list[bool]
+        :param adjacency_list: list[set]
+        :return: tuple(set(), list[bool])
         """
         stack = [node]                                                      # O(1)
         component = {node}                                                  # O(1)
@@ -132,29 +134,35 @@ class RecommenderSystem:
             if visited[node]:                                                   # O(1)
                 continue                                                        # O(1)
             visited[node] = True                                                # O(1)
-            for neighbour in self.adjacency_list[node]:                         # O(|adjacent vertices|)
+            for neighbour in adjacency_list[node]:                              # O(|adjacent vertices|)
                 if not visited[neighbour]:                                          # O(1)
                     stack.append(neighbour)                                         # O(1)
         return component, visited
 
-    def get_connected_components(self):                                             # Total: O(m+s)
+    def get_connected_components(self, similarities):                               # Total: O(m+s)
         """
+        Performs DFS on all unvisited vertices, updating the
+        list of connected components.
 
-        :return:
+        :param similarities: list[list[str]]
+        :return:  list[set[str]] list of sets of vertices in each component
         """
         n = len(self.movies)                                                        # O(1)
+        adjacency_list = self.get_adjacency_list(similarities)
         components = []                                                             # O(1)
         visited = [False for _ in range(n)]                                         # O(m)
         for ind in range(n):                                                        # O(m)
             if not visited[ind]:                                                        # O(1)
-                component, visited = self.dfs(ind, visited)                             # O(|V|+|E|) in this component
+                component, visited = self.dfs(ind, visited, adjacency_list)             # O(|V|+|E|) in this component
                 components.append(set(map(lambda x: self.movies[x], component)))        # O(1)
         return components
 
     def get_component_assignment(self):                                             # Total  O(m)
         """
+        Creates a dictionary which maps movie title to connected
+        component index.
 
-        :return:
+        :return:  dict[str, int]
         """
         assignment_dict = {}                                                        # O(1)
         for ind, component in enumerate(self.connected_components):                 # O(m) |U{components}| = |m|
@@ -164,9 +172,11 @@ class RecommenderSystem:
 
     def count_films(self, friends):                                                 # Total: O(f)
         """
+        Reshapes two-dimensional list of similarities
+        to one dimensional. Counts frequencies of films in list.
 
-        :param friends:
-        :return:
+        :param friends:  list[list[str]]
+        :return: Counter
         """
         flat_list = []                                                              # O(1)
         for item in friends:                                                        # O(f) |U{friend list}| = |f|
@@ -176,9 +186,11 @@ class RecommenderSystem:
 
     def get_discussability(self, friends):                                          # Total O(f+m)
         """
+        Calculates discussability by calculating film frequencies
+        in friends and assigning each film index its frequency.
 
-        :param friends:
-        :return:
+        :param friends: list[list[str]]
+        :return: list[int]
         """
         n = len(self.movies)                                                        # O(1)
         film_counts = self.count_films(friends)                                     # O(f)
@@ -189,9 +201,20 @@ class RecommenderSystem:
 
     def get_uniqueness(self, friends):                                                  # Total O(m+f+c)
         """
+        Calculates uniqueness by calculating sum of film frequencies
+        in friends for every component.
+        In component_counts it stores sum of frequencies of films from this component
+        and cardinality of each component.
 
-        :param friends:
-        :return:
+        uniqueness[movie] =
+        =(sum of component film frequencies - frequency[movie])
+        /(cardinality[component] - 1)
+
+        In case of cardinality == 1, we have single film in component, uniqueness
+        can't be determined - 0 is assigned.
+
+        :param friends: list[list[str]]
+        :return: list[int]
         """
         s = []                                                                          # O(1)
         film_counts = self.count_films(friends)                                         # O(f)
@@ -210,14 +233,15 @@ class RecommenderSystem:
 
     def get_recommendation(self, friends):                                              # Total O(f+m)
         """
-
-        :param friends:
-        :return:
+        Calculates ratings of films.
+        If uniqueness == 0, rating is 0.
+        Returns the film with the highest rating.
+        :param friends: list[list[str]]
+        :return: str
         """
         f = self.get_discussability(friends)                                            # O(f+m)
         s = self.get_uniqueness(friends)                                                # O(m)
         rating = [f / s if s != 0 else 0 for f, s in zip(f, s)]                         # O(m)
-        print(rating)
         return self.movies[argmax(rating)]                                              # O(m)
 
 
@@ -234,7 +258,7 @@ if __name__ == "__main__":
                ["Jojo Rabbit", "Joker"]]
 
     rs = RecommenderSystem(movies, similarities)
-    print(rs.adjacency_list)
+    print(rs.get_adjacency_list(similarities))
     print(movies)
     print(rs.get_discussability(friends))
     print(rs.connected_components)
@@ -254,7 +278,7 @@ if __name__ == "__main__":
                ["Jojo Rabbit", "Joker"]]
 
     rs = RecommenderSystem(movies, similarities)
-    print(rs.adjacency_list)
+    print(rs.get_adjacency_list(similarities))
     print(movies)
     print(rs.get_discussability(friends))
     print(rs.connected_components)

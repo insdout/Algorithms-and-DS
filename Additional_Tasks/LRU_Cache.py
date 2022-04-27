@@ -122,18 +122,15 @@ class LRUCache:
             self.d[key].val = value
             self.cache.rise_on_top(self.d[key])
         else:
+            if self.capacity <= 0:
+                key_to_remove = self.cache.head.key
+                self.cache.pop_oldest()
+                del self.d[key_to_remove]
+                self.capacity += 1
             node = ListNode(key, value)
             self.d[key] = node
             self.cache.append(node)
             self.capacity -= 1
-            if self.capacity < 0:
-                key = self.cache.head.key
-
-                self.cache.pop_oldest()
-
-                del self.d[key]
-
-                self.capacity += 1
         print(self.cache)
 
 

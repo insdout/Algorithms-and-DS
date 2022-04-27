@@ -77,21 +77,31 @@ from collections import Counter
 from numpy import argmax
 
 
-class Database:
+class RecommenderSystem:
+
     def __init__(self, movies, similarities):
-        self.movies = movies
-        self.movie_to_index = self.get_movie_to_index()                     # O(m)
-        self.adjacency_list = self.get_adjacency_list(similarities)         # O(m+s)
-        self.connected_components = self.get_connected_components()         # O(m+s)
-        self.movie_to_component = self.get_component_assignment()           # O(m)
+        self.movies = movies                                                #           type: list[str]
+        self.movie_to_index = self.get_movie_to_index()                     # O(m)      type: Dict[str, int]
+        self.adjacency_list = self.get_adjacency_list(similarities)         # O(m+s)    type: List[set]
+        self.connected_components = self.get_connected_components()         # O(m+s)    type: List[set]
+        self.movie_to_component = self.get_component_assignment()           # O(m)      type: Dict[str, int]
 
     def get_movie_to_index(self):                                           # Total: O(m)
+        """
+
+        :return:
+        """
         d = {}                                                              # O(1)
         for ind, movie in enumerate(self.movies):                           # O(m)
             d[movie] = ind                                                      # O(1)
         return d
 
     def get_adjacency_list(self, similarities):                             # Total: O(m+s)
+        """
+
+        :param similarities:
+        :return:
+        """
         adj_list = [set() for _ in range(len(self.movies))]                 # O(m)
         for movie1, movie2 in similarities:                                 # O(s)
             try:
@@ -107,6 +117,12 @@ class Database:
         return adj_list
 
     def dfs(self, node, visited):                                           # Total: O(m+s)
+        """
+
+        :param node:
+        :param visited:
+        :return:
+        """
         stack = [node]                                                      # O(1)
         component = {node}                                                  # O(1)
         while stack:                                                        # O(m+s) Visit vertices only once
@@ -121,6 +137,10 @@ class Database:
         return component, visited
 
     def get_connected_components(self):                                             # Total: O(m+s)
+        """
+
+        :return:
+        """
         n = len(self.movies)                                                        # O(1)
         components = []                                                             # O(1)
         visited = [False for _ in range(n)]                                         # O(m)
@@ -131,6 +151,10 @@ class Database:
         return components
 
     def get_component_assignment(self):                                             # Total  O(m)
+        """
+
+        :return:
+        """
         assignment_dict = {}                                                        # O(1)
         for ind, component in enumerate(self.connected_components):                 # O(m) |U{components}| = |m|
             for movie in component:                                                     # O(|component|)
@@ -138,6 +162,11 @@ class Database:
         return assignment_dict
 
     def count_films(self, friends):                                                 # Total: O(f)
+        """
+
+        :param friends:
+        :return:
+        """
         flat_list = []                                                              # O(1)
         for item in friends:                                                        # O(f) |U{friend list}| = |f|
             flat_list.extend(item)                                                      # O(|friend list|)
@@ -145,14 +174,24 @@ class Database:
         return d
 
     def get_discussability(self, friends):                                          # Total O(f+m)
+        """
+
+        :param friends:
+        :return:
+        """
         n = len(self.movies)                                                        # O(1)
-        d = self.count_films(friends)                                               # O(f)
+        film_counts = self.count_films(friends)                                     # O(f)
         f = [0 for _ in range(n)]                                                   # O(m)
         for ind, movie in enumerate(self.movies):                                   # O(m)
-            f[ind] = d.get(movie, 0)                                                    # O(1)
+            f[ind] = film_counts.get(movie, 0)                                      # O(1)
         return f
 
-    def get_uniqueness(self, friends):                                                  # Total O(m)
+    def get_uniqueness(self, friends):                                                  # Total O(m+f+c)
+        """
+
+        :param friends:
+        :return:
+        """
         s = []                                                                          # O(1)
         film_counts = self.count_films(friends)                                         # O(f)
         component_counts = [tuple() for _ in range(len(self.connected_components))]     # O(c)
@@ -169,6 +208,11 @@ class Database:
         return s
 
     def get_recommendation(self, friends):                                              # Total O(f+m)
+        """
+
+        :param friends:
+        :return:
+        """
         f = self.get_discussability(friends)                                            # O(f+m)
         s = self.get_uniqueness(friends)                                                # O(m)
         rating = [f / s if s != 0 else 0 for f, s in zip(f, s)]                         # O(m)
@@ -188,14 +232,14 @@ if __name__ == "__main__":
                ["1917"],
                ["Jojo Rabbit", "Joker"]]
 
-    db = Database(movies, similarities)
-    print(db.adjacency_list)
+    rs = RecommenderSystem(movies, similarities)
+    print(rs.adjacency_list)
     print(movies)
-    print(db.get_discussability(friends))
-    print(db.connected_components)
-    print(db.movie_to_component)
-    print(db.get_uniqueness(friends))
-    print(db.get_recommendation(friends))
+    print(rs.get_discussability(friends))
+    print(rs.connected_components)
+    print(rs.movie_to_component)
+    print(rs.get_uniqueness(friends))
+    print(rs.get_recommendation(friends))
 
     movies = ["Parasite", "1917", "Ford v Ferrari", "Jojo Rabbit", "Joker", "Alien"]
     similarities = [["Parasite", "1917"],
@@ -208,11 +252,11 @@ if __name__ == "__main__":
                ["1917","Parasite"],
                ["Jojo Rabbit", "Joker"]]
 
-    db = Database(movies, similarities)
-    print(db.adjacency_list)
+    rs = RecommenderSystem(movies, similarities)
+    print(rs.adjacency_list)
     print(movies)
-    print(db.get_discussability(friends))
-    print(db.connected_components)
-    print(db.movie_to_component)
-    print(db.get_uniqueness(friends))
-    print(db.get_recommendation(friends))
+    print(rs.get_discussability(friends))
+    print(rs.connected_components)
+    print(rs.movie_to_component)
+    print(rs.get_uniqueness(friends))
+    print(rs.get_recommendation(friends))

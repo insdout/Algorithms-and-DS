@@ -113,18 +113,3 @@ if __name__ == "__main__":
     ll = LinkedList([6, 7, 1, 4, 2, 5, 3])
     print(ll)
     print("Answer:", sortList(ll.head))
-
-    import binarytree
-
-
-    def convert_to_bintree(root):
-        new_root = binarytree.Node(root.key)
-        if root.left != None:
-            new_root.left = convert_to_bintree(root.left)
-        if root.right != None:
-            new_root.right = convert_to_bintree(root.right)
-        return new_root
-
-
-    def print_tree(root):
-        print(convert_to_bintree(root))

@@ -1,0 +1,261 @@
+Notations:
+m - total number of films in movies
+s = total number of films in similarities
+f = total number of films in friends
+
+The proposed algorithm is following:
+1.  create adjacency list from similarities pairs.
+    For every pair we would add two edges as the graph is undirected.
+    That will suffice to traverse the graph and find all connected
+    component later.
+    Example: similarities = [[a,b], [b, c]].
+    adjacency_list = [a:{b}, b:{a,c}, c:{b}].
+    We can see that there exists path from a to c : a->b->c,
+    so the transitivity property is not violated.
+    ============================================
+    Time complexity: O(m+2*s) = O(m+s)
+    Space complexity: O(m+2*s) = O(m+s)
+    adjacency_list: list[set()]
+
+2.  Traverse the graph via DFS algorithm until all vertices are visited to
+    get all connected components.
+    We visit every vertex only once plus all its adjacent edges.
+    We will need to create:
+      - a list of visited vertices: O(m) space
+      - list of sets to store connected components: O(m) space
+      - dictionary to map film to its component: O(m) space
+    ============================================
+    Time complexity: O(m+2*S) = O(m+s)
+    Space complexity: O(m)
+    connected_components: list[set()]
+    movie_to_component:   dict[str, int]
+
+3.  Count frequencies of films in friends.
+    We will iterate over all films in friends and increment film counter in
+    dictionary. We count each film only once.
+    That dictionary will get us discussability of film.
+    ============================================
+    Time complexity: O(f)
+    Space complexity: O(f)
+    movie_counts:   dict[str, int]
+
+4.  For every connected component we will calculate the sum of movie frequency
+    counts and cardinality of component (which is len(component))
+    with dictionary created in 3. To do it we will iterate over all components
+    and sum frequencies of films in components, as every film belongs only
+    to one component, we iterate every film once.
+
+    Justification: each connected component stores similar movies. Uniqueness
+    is mean of frequency counts of similar movies. Which is:
+    Uniqueness[movie_1] = sum (frequencies of similar to movie_1 movies)/
+    (number of such movies) = sum (frequencies of movie_1 component) -
+    -frequency[movie_1])/(cardinality of movie_1 component - 1)
+
+    We will need to create:
+      - a list of components sums: O(m) space, O(m) time
+    ============================================
+    Time complexity:  O(m)
+    Space complexity: O(m)
+    component_counts: dict[int, tuple(int, int)]
+
+5.  Calculate Uniqueness.
+    for every movie we get component sum and cardinality from dictionary in
+    step 4. Than subtract from component sum this movie frequency and divide
+    by cardinality of component -1
+    It is done once per film. All required information is located in
+    dictionaries, so it's linear time. O(m)
+    ============================================
+    Time complexity:  O(m)
+    Space complexity: O(m)
+    Uniqueness: list[int]
+
+6.  Get recommendations:
+    For every movie we get its frequency from dictionary and divide
+    by uniqueness from 5. Than find index of maximum rating and return movie
+    by that index.
+    ============================================
+    Time complexity:  O(m)
+    Space complexity: O(m)
+    return: str
+
+    Total time complexity: O(m+s+f)
+    Total space complexity: O(m+s+f)
+
+Proof of correctness:
+1.  Discussability.
+    The only way we can calculate discussability is to iterate over each
+    film in friends and count them. That's exactly what the algorithm does.
+    It can be done in O(f) time.
+    Regarding the space complexity, it could be optimized to O(min(f,m)),
+    depending on which films could appear in friends. If all films in
+    friends are in given list of movies than it's O(f) as |f| <= |m|.
+    If we would know that considerable amount of movies in friends don't
+    intersect with given list of movies, we can count only films, which
+    appears in movies. That give us O(min(f,m)) space complexity.
+    In my realization I assume that set of films in friends is subset of
+    film in movies. So its O(f) space complexity.
+
+2.  Uniqueness.
+    There is no way to calculate uniqueness in constant time as we need to
+    count frequencies of all similar films for every film, at least it could be
+    linear. The minimum time complexity could be O(m+s), as we need to take
+    all movies and their similarities into account.
+    The minimum time complexity is O(m+s).
+    To do it in O(m+s) time, we need to calculate uniqueness for every film in
+    constant time.
+    That could be done in the following way:
+      - we get sum of frequencies for every components ||Time: O(m+s) Space: O(m)
+      - we get length of every component  ||Time: O(m) Space: O(m)
+      - we get frequencies for every film ||Time: O(m) Space: O(f)
+      Than we can calculate uniqueness in O(1) for each film, according to
+      the formula:
+      uniq[movie_1] =
+      comp_sum[movie_to_comp[movie_1]] - movie_counts[movie_1]/
+      (comp_len[movie_to_comp[movie_1]]-1)
+      which takes O(1) to compute.
+
+      Justification of formula:
+      Each connected component stores similar movies. Uniqueness
+      is mean of frequency counts of similar movies. Which is:
+      Uniqueness[movie_1] = sum (frequencies of similar to movie_1 movies)/
+      (number of such movies) = sum (frequencies of movie_1 component) -
+      -frequency[movie_1])/(cardinality of movie_1 component - 1)
+
+The optimal solution time complexity is O(f) + O(m+s) = O(m+s+f)
+The optimal solution space complexity is O(f) + O(m+s) = O(m+f)
+
+My algorithm time complexity is O(m+s+f)
+My algorithm space complexity is O(m+s+f)
+
+In my realization I am using additional O(s) space complexity to
+speed up component search via DFS by converting edge list to adjacency list
+and get O(m+s) time complexity instead of O(m*s) if traversing all edges in
+edge list.
+
+
+
+Time Complexity.
+Notations:
+m - total number of films in movies
+s = total number of films in similarities
+f = total number of films in friends
+
+The proposed algorithm is following:
+1.  create adjacency list from similarities pairs.
+    For every pair we would add two edges as the graph is undirected.
+    we create lis of len(m): O(m) time
+    for every s in S we do constant amount of O(1) operations.
+    ============================================
+    Time complexity: O(m+2*s) = O(m+s)
+    Space complexity: O(m+2*s) = O(m+s)
+
+2.  Traverse the graph via DFS algorithm until all vertices are visited to
+    get all connected components.
+    We visit every vertex only once plus all its adjacent edges.
+    We do: visit all vertices + all adjacent edges
+    O(m+s) constant operations.
+    ============================================
+    Time complexity: O(m+2*S) = O(m+s)
+    Space complexity: O(m)
+
+
+3.  Count frequencies of films in friends.
+    for film in friends we do constant number of O(1) operations.
+    O(f) constant operations
+    ============================================
+    Time complexity: O(f)
+    Space complexity: O(f)
+    movie_counts:   dict[str, int]
+
+4.  For every connected component we will calculate the sum of movie frequency
+    counts and cardinality of component (which is len(component))
+    with dictionary created in 3.
+    sum of all components is sum of m integers: O(m)
+    calculate len of all components: len of all components is m,
+    than len(list1) + len(list2)+ ..+len(listN) is O(m)
+
+    We will need to create:
+      - a list of components sums: O(m) space, O(m) time
+    ============================================
+    Time complexity:  O(m)
+    Space complexity: O(m)
+
+
+5.  Calculate Uniqueness.
+    for every movie we get component sum and cardinality from dictionary in
+    step 4. Than subtract from component sum this movie frequency and divide
+    by cardinality of component -1
+    It is done once per film. All required information is located in
+    dictionaries, so it's linear time.
+    m*O(1) operations: O(m)
+    ============================================
+    Time complexity:  O(m)
+    Space complexity: O(m)
+    Uniqueness: list[int]
+
+6.  Get recommendations:
+    For every movie we get its frequency from dictionary and divide
+    by uniqueness from 5. Than find index of maximum rating and return movie
+    by that index.
+    m*O(1) operations: O(m)
+    plus finding max in list of length m is O(m)
+    ============================================
+    Time complexity:  O(m)
+    Space complexity: O(m)
+    return: str
+
+    Total time complexity: O(m+s+f)
+    Total space complexity: O(m+s+f)
+
+
+    Space Complexity.
+    Notations:
+    m - total number of films in movies
+    s = total number of films in similarities
+    f = total number of films in friends
+
+    The proposed algorithm is following:
+    1.  create adjacency list from similarities pairs.
+        For every pair we would add two edges as the graph is undirected.
+        we create lis of len(m) with nested sets
+        of total cardinality 2*s: O(m+s) space
+        ============================================
+        Space complexity: O(m+2*s) = O(m+s)
+
+    2.  Traverse the graph via DFS algorithm until all vertices are visited to
+        get all connected components.
+        We create a list of length m O(m) space compexity
+        ============================================
+        Space complexity: O(m)
+
+
+    3.  Count frequencies of films in friends.
+        for film in friends
+        we create dictionary with f keys
+        ============================================
+        Space complexity: O(f)
+
+
+    4.  For every connected component we will calculate the
+        sum of movie frequency
+        counts and cardinality of component (which is len(component))
+        with dictionary created in 3.
+
+        We will need to create:
+          - a list of tuples components sums and length: O(m) space
+        ============================================
+        Space complexity: O(m)
+
+
+    5.  Calculate Uniqueness.
+        we create list of length m: O(m) space complexity
+        ============================================
+        Space complexity: O(m)
+
+    6.  Get recommendations:
+        we create list of length m: O(m) space complexity
+        ============================================
+        Space complexity: O(m)
+
+
+        Total space complexity: O(m+s+f)
